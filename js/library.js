@@ -1,3 +1,4 @@
+alert("library.js読み込み成功！");
 // 保存された単語帳を取得
 
 const savedWords = JSON.parse(
