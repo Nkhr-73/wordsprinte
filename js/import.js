@@ -67,6 +67,14 @@ for (let i = 1; i < lines.length; i++) {
 
 // 完成した単語帳を確認
 console.log(words);
+        
+        // ブラウザに保存
+localStorage.setItem("words", JSON.stringify(words));
+        alert("単語帳を保存しました！");
+        
+        const savedWords = JSON.parse(localStorage.getItem("words"));
+
+console.log(savedWords);
 
 // 画面にも表示してみる
 document.getElementById("result").innerHTML = "";
