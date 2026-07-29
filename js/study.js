@@ -1,3 +1,4 @@
+alert("study.js読み込み成功");
 const words=[
 
 {
