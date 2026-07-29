@@ -2,34 +2,36 @@
 
 const csvFile = document.getElementById("csvFile");
 const fileName = document.getElementById("fileName");
+const importButton = document.getElementById("importButton");
+const result = document.getElementById("result");
 
 // ===== イベント =====
 
 csvFile.addEventListener("change", showFileName);
+importButton.addEventListener("click", readCSV);
 
-// ===== 関数 =====
+// ==============================
+// ファイル名を表示
+// ==============================
 
-// ファイル名を表示する
 function showFileName() {
 
-    // ファイルが選択されていない場合
     if (csvFile.files.length === 0) {
         fileName.textContent = "ファイルが選択されていません";
         return;
     }
 
-    // ファイル名を表示
     fileName.textContent = csvFile.files[0].name;
+
 }
 
-
-
-// ===== CSV読み込み =====
-
-importButton.addEventListener("click", readCSV);
+// ==============================
+// CSVを読み込む
+// ==============================
 
 function readCSV() {
 
+    // ファイル未選択
     if (csvFile.files.length === 0) {
         alert("CSVファイルを選択してください。");
         return;
@@ -40,55 +42,76 @@ function readCSV() {
 
     reader.onload = function (event) {
 
+        // CSV全文
         const csvText = event.target.result;
+
         // 改行ごとに分割
-const lines = csvText.trim().split(/\r?\n/);
-        // 1行目をカンマで区切る
-const headers = lines[0].split(",");
+        const lines = csvText.trim().split(/\r?\n/);
 
-// 確認
-console.log(headers);
+        // ヘッダー取得
+        const headers = lines[0].split(",");
 
+        // 単語データ
         const words = [];
 
-        // ヘッダー以外を1行ずつ読む
-for (let i = 1; i < lines.length; i++) {
+        // 2行目以降を読み込む
+        for (let i = 1; i < lines.length; i++) {
 
-    const values = lines[i].split(",");
+            const values = lines[i].split(",");
 
-    const word = {};
+            const word = {};
 
-    for (let j = 0; j < headers.length; j++) {
-        word[headers[j]] = values[j];
-    }
-    words.push(word);
+            // ヘッダーと値を対応させる
+            for (let j = 0; j < headers.length; j++) {
+                word[headers[j]] = values[j];
+            }
 
-}
+            // 配列へ追加
+            words.push(word);
 
-// 完成した単語帳を確認
-console.log(words);
-        
-        // ブラウザに保存
-localStorage.setItem("words", JSON.stringify(words));
+        }
+
+        // localStorageへ保存
+        localStorage.setItem(
+            "wordsprint_words",
+            JSON.stringify(words)
+        );
+
+        // 保存状況更新
+        updateSavedCount();
+
+        // 読み込み結果表示
+        result.textContent =
+            JSON.stringify(words, null, 2);
+
+        // Console確認用
+        console.log(words);
+
         alert("単語帳を保存しました！");
-        
-        const savedWords = JSON.parse(localStorage.getItem("words"));
-
-console.log(savedWords);
-
-// 画面にも表示してみる
-document.getElementById("result").innerHTML = "";
-
-lines.forEach(line => {
-    document.getElementById("result").innerHTML += line + "<br>";
-});
-
-        console.log(JSON.stringify(csvText));
-
-        document.getElementById("result").textContent = csvText;
 
     };
 
     reader.readAsText(file, "UTF-8");
 
 }
+
+// ==============================
+// 保存されている単語数を表示
+// ==============================
+
+function updateSavedCount() {
+
+    const savedWords =
+        JSON.parse(localStorage.getItem("wordsprint_words")) || [];
+
+    const savedCount = document.getElementById("savedCount");
+
+    if (savedCount) {
+        savedCount.textContent =
+            `保存されている単語：${savedWords.length}語`;
+    }
+
+}
+
+// ページを開いた時に表示
+updateSavedCount();
