@@ -1,88 +1,70 @@
 <!DOCTYPE html>
 <html lang="ja">
-<head>
 
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>WordSprint | Study</title>
-
-    <link rel="stylesheet" href="study.css">
-
+    <title>Study | WordSprint</title>
 </head>
+
+
 <body>
 
-<header>
+    <h1>📖 Study</h1>
 
-    <button class="homeBtn" onclick="location.href='index.html'">
-        ← Home
+
+    <p>
+        <span id="current">1</span>
+        /
+        <span id="total">3</span>
+    </p>
+
+
+    <h2 id="word">
+        単語
+    </h2>
+
+
+    <button id="showMeaning">
+        意味を見る
     </button>
 
-    <h1>Study</h1>
 
-</header>
-
-<main>
-
-    <div class="progressText">
-        <span id="current">1</span> /
-        <span id="total">3</span>
-    </div>
-
-    <div class="progressBar">
-
-        <div id="progress"></div>
-
-    </div>
+    <p id="meaning">
+        意味
+    </p>
 
 
-    <div class="card">
+    <div>
 
-        <div id="word">
-            abandon
-        </div>
-
-        <button id="showMeaning">
-            意味を見る
-        </button>
-
-        <div id="meaning">
-            捨てる・見捨てる
-        </div>
-
-    </div>
-
-    <div class="buttons">
-
-        <button class="difficulty bad" onclick="rate(0)">
+        <button onclick="rate('bad')">
             😵 全然
         </button>
 
-        <button class="difficulty normal" onclick="rate(1)">
+        <button onclick="rate('unsure')">
             🤔 あやしい
         </button>
 
-        <button class="difficulty good" onclick="rate(2)">
+        <button onclick="rate('perfect')">
             😎 完璧
         </button>
 
     </div>
 
-    <div class="navigation">
 
-        <button onclick="previousWord()">
-            ← 前へ
-        </button>
+    <button onclick="previousWord()">
+        ← 前へ
+    </button>
 
-        <button onclick="nextWord()">
-            次へ →
-        </button>
 
-    </div>
+    <button onclick="nextWord()">
+        次へ →
+    </button>
 
-</main>
 
-<script src="study.js"></script>
+    <script src="js/study.js"></script>
 
 </body>
+
 </html>
