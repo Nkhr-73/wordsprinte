@@ -2,17 +2,20 @@ const words=[
 
 {
 word:"abandon",
-meaning:"捨てる・見捨てる"
+meaning:"捨てる・見捨てる",
+status:null
 },
 
 {
 word:"accurate",
-meaning:"正確な"
+meaning:"正確な",
+status:null
 },
 
 {
 word:"obtain",
-meaning:"得る"
+meaning:"得る",
+status:null
 }
 
 ];
@@ -71,9 +74,13 @@ function previousWord(){
 
 function rate(level){
 
-    console.log(words[current].word,level);
+    words[current].status = level;
+
+    console.log(words[current]);
 
     nextWord();
+
+}
 
 }
 
