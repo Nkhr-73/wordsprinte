@@ -1,69 +1,126 @@
-// ===== 保存されている単語を取得 =====
+// ========================================
+// WordSprint - Study
+// ========================================
 
-const savedWords =
-    JSON.parse(localStorage.getItem("wordsprint_words")) || [];
+
+// ========================================
+// ① 単語データを読み込む
+// ========================================
+
+const savedData = localStorage.getItem("wordsprint_words");
+
+let words = [];
 
 
-// ===== 単語がない場合 =====
+// データが存在する場合
+if (savedData) {
 
-if (savedWords.length === 0) {
+    try {
 
-    alert("単語帳がありません。先にCSVを読み込んでください。");
+        words = JSON.parse(savedData);
+
+    } catch (error) {
+
+        console.error("単語データの読み込みに失敗しました。", error);
+
+    }
 
 }
 
 
-// ===== Study用データ =====
+// 読み込み確認
+console.log("===== WordSprint Study =====");
+console.log("読み込んだ単語数:", words.length);
+console.log("最初の単語:", words[0]);
 
-const words = savedWords;
-console.log("単語データ:", words[0]);
-console.log("word:", words[0]?.word);
-console.log("meaning:", words[0]?.meaning);
+
+// ========================================
+// ② HTML要素を取得
+// ========================================
+
+const wordElement = document.getElementById("word");
+const meaningElement = document.getElementById("meaning");
+
+const currentElement = document.getElementById("current");
+const totalElement = document.getElementById("total");
+
+const showMeaningButton =
+    document.getElementById("showMeaning");
+
+
+// ========================================
+// ③ 現在の問題番号
+// ========================================
 
 let current = 0;
 
 
-// ===== HTML要素 =====
+// ========================================
+// ④ 単語を表示する
+// ========================================
 
-const word = document.getElementById("word");
-const meaning = document.getElementById("meaning");
+function displayWord() {
 
-
-// ===== 問題を表示 =====
-
-function display() {
-
+    // 単語がない場合
     if (words.length === 0) {
-        word.textContent = "単語がありません";
-        meaning.style.display = "none";
+
+        wordElement.textContent = "単語がありません";
+
+        meaningElement.textContent = "";
+
+        currentElement.textContent = "0";
+
+        totalElement.textContent = "0";
+
         return;
     }
 
-    word.textContent = words[current].word;
 
-    meaning.textContent = words[current].meaning;
+    // 現在の単語
+    const currentWord = words[current];
 
-    meaning.style.display = "none";
 
-    document.getElementById("current").textContent =
+    console.log("現在の単語:", currentWord);
+
+
+    // 単語を表示
+    wordElement.textContent =
+        currentWord.word || "単語なし";
+
+
+    // 意味を設定
+    meaningElement.textContent =
+        currentWord.meaning || "意味なし";
+
+
+    // 意味を隠す
+    meaningElement.style.display = "none";
+
+
+    // 進行状況
+    currentElement.textContent =
         current + 1;
 
-    document.getElementById("total").textContent =
+    totalElement.textContent =
         words.length;
 
 }
 
 
-// ===== 意味を見る =====
+// ========================================
+// ⑤ 「意味を見る」
+// ========================================
 
-document.getElementById("showMeaning").onclick = function () {
+showMeaningButton.onclick = function () {
 
-    meaning.style.display = "block";
+    meaningElement.style.display = "block";
 
 };
 
 
-// ===== 次の問題 =====
+// ========================================
+// ⑥ 次の問題
+// ========================================
 
 function nextWord() {
 
@@ -71,14 +128,16 @@ function nextWord() {
 
         current++;
 
-        display();
+        displayWord();
 
     }
 
 }
 
 
-// ===== 前の問題 =====
+// ========================================
+// ⑦ 前の問題
+// ========================================
 
 function previousWord() {
 
@@ -86,30 +145,44 @@ function previousWord() {
 
         current--;
 
-        display();
+        displayWord();
 
     }
 
 }
 
 
-// ===== 理解度を記録 =====
+// ========================================
+// ⑧ 理解度を記録
+// ========================================
 
-window.rate = function (level) {
+window.rate = function(level) {
 
+    if (words.length === 0) {
+        return;
+    }
+
+
+    // 現在の単語に評価を追加
     words[current].status = level;
+
 
     console.log(
         "評価:",
         words[current].word,
+        "→",
         level
     );
 
+
+    // 次の問題へ
     nextWord();
 
 };
 
 
-// ===== 最初の問題を表示 =====
+// ========================================
+// ⑨ 最初の問題を表示
+// ========================================
 
-display();
+displayWord();
