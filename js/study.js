@@ -1,53 +1,46 @@
-// ===== 確認用 =====
-alert("study.js読み込み成功！");
+// ===== 保存されている単語を取得 =====
+
+const savedWords =
+    JSON.parse(localStorage.getItem("wordsprint_words")) || [];
 
 
-// ===== 単語データ =====
+// ===== 単語がない場合 =====
 
-const words = [
+if (savedWords.length === 0) {
 
-    {
-        word: "abandon",
-        meaning: "捨てる・見捨てる",
-        status: null
-    },
+    alert("単語帳がありません。先にCSVを読み込んでください。");
 
-    {
-        word: "accurate",
-        meaning: "正確な",
-        status: null
-    },
-
-    {
-        word: "obtain",
-        meaning: "得る",
-        status: null
-    }
-
-];
+}
 
 
-// ===== 現在位置 =====
+// ===== Study用データ =====
+
+const words = savedWords;
 
 let current = 0;
 
 
-// ===== 要素取得 =====
+// ===== HTML要素 =====
 
 const word = document.getElementById("word");
 const meaning = document.getElementById("meaning");
 
 
-// ===== 表示 =====
+// ===== 問題を表示 =====
 
-function display(){
+function display() {
+
+    if (words.length === 0) {
+        word.textContent = "単語がありません";
+        meaning.style.display = "none";
+        return;
+    }
 
     word.textContent = words[current].word;
 
     meaning.textContent = words[current].meaning;
 
     meaning.style.display = "none";
-
 
     document.getElementById("current").textContent =
         current + 1;
@@ -58,20 +51,20 @@ function display(){
 }
 
 
-// ===== 答え表示 =====
+// ===== 意味を見る =====
 
-document.getElementById("showMeaning").onclick = () => {
+document.getElementById("showMeaning").onclick = function () {
 
     meaning.style.display = "block";
 
 };
 
 
-// ===== 次へ =====
+// ===== 次の問題 =====
 
-function nextWord(){
+function nextWord() {
 
-    if(current < words.length - 1){
+    if (current < words.length - 1) {
 
         current++;
 
@@ -82,11 +75,11 @@ function nextWord(){
 }
 
 
-// ===== 前へ =====
+// ===== 前の問題 =====
 
-function previousWord(){
+function previousWord() {
 
-    if(current > 0){
+    if (current > 0) {
 
         current--;
 
@@ -97,12 +90,11 @@ function previousWord(){
 }
 
 
-// ===== 評価 =====
+// ===== 理解度を記録 =====
 
-window.rate = function(level){
+window.rate = function (level) {
 
     words[current].status = level;
-
 
     console.log(
         "評価:",
@@ -110,12 +102,11 @@ window.rate = function(level){
         level
     );
 
-
     nextWord();
 
 };
 
 
-// ===== 初期表示 =====
+// ===== 最初の問題を表示 =====
 
 display();
