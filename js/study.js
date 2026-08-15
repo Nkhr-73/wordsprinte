@@ -16,6 +16,9 @@ if (savedWords.length === 0) {
 // ===== Study用データ =====
 
 const words = savedWords;
+console.log("単語データ:", words[0]);
+console.log("word:", words[0]?.word);
+console.log("meaning:", words[0]?.meaning);
 
 let current = 0;
 
