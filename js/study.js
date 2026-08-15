@@ -3,6 +3,7 @@
 // ========================================
 
 
+
 // ===== 単語データを読み込む =====
 
 const savedData = localStorage.getItem("wordsprint_words");
@@ -92,6 +93,26 @@ document.getElementById("showMeaning").onclick = function () {
     meaning.style.display = "block";
 
 };
+// ========================================
+// 習得率を計算
+// ========================================
+
+function calculateMasteryRate() {
+
+    if (words.length === 0) {
+        return 0;
+    }
+
+    // 「perfect」の単語を数える
+    const masteredCount =
+        words.filter(word => word.status === "perfect").length;
+
+    // 習得率を計算
+    const rate =
+        (masteredCount / words.length) * 100;
+
+    return rate;
+}
 
 
 // ===== 次の問題 =====
@@ -161,3 +182,8 @@ window.rate = function(level) {
 // ===== 最初の問題を表示 =====
 
 display();
+
+console.log(
+    "習得率:",
+    calculateMasteryRate() + "%"
+);
