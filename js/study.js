@@ -133,13 +133,20 @@ window.rate = function(level) {
     }
 
 
-    // 現在の単語に評価を設定
+    // 現在の単語に評価を保存
     words[current].status = level;
+
+
+    // localStorageに保存
+    localStorage.setItem(
+        "wordsprint_words",
+        JSON.stringify(words)
+    );
 
 
     // Consoleで確認
     console.log(
-        "評価:",
+        "評価を保存:",
         words[current].word,
         "→",
         level
@@ -150,7 +157,6 @@ window.rate = function(level) {
     nextWord();
 
 };
-
 
 // ===== 最初の問題を表示 =====
 
