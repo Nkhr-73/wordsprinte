@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Statistics - WordSprint</title>
+</head>
+
+<body>
+
+    <h1>Statistics</h1>
+
+    <!-- 全体 -->
+    <section>
+
+        <h2>📊 学習状況</h2>
+
+        <p>
+            総単語数：
+            <span id="totalWords">0</span>語
+        </p>
+
+        <p>
+            学習済み：
+            <span id="studiedWords">0</span>語
+        </p>
+
+        <p>
+            未評価：
+            <span id="unratedWords">0</span>語
+        </p>
+
+        <p>
+            習得率：
+            <span id="masteryRate">0.0</span>%
+        </p>
+
+    </section>
+
+
+    <!-- 評価別 -->
+    <section>
+
+        <h2>🎯 評価別</h2>
+
+        <p>
+            😎 完璧：
+            <span id="perfectCount">0</span>語
+        </p>
+
+        <p>
+            🤔 あやしい：
+            <span id="unsureCount">0</span>語
+        </p>
+
+        <p>
+            😵 全然：
+            <span id="badCount">0</span>語
+        </p>
+
+    </section>
+
+
+    <!-- 進捗 -->
+    <section>
+
+        <h2>📈 進捗</h2>
+
+        <p>
+            学習済み：
+            <span id="progressRate">0.0</span>%
+        </p>
+
+    </section>
+
+
+    <!-- Unit別 -->
+    <section>
+
+        <h2>📚 Unit別</h2>
+
+        <div id="unitStats">
+            読み込み中...
+        </div>
+
+    </section>
+
+
+    <!-- 苦手単語 -->
+    <section>
+
+        <h2>⚠️ 復習が必要な単語</h2>
+
+        <div id="weakWords">
+            読み込み中...
+        </div>
+
+    </section>
+
+
+    <!-- 完璧な単語 -->
+    <section>
+
+        <h2>😎 習得した単語</h2>
+
+        <div id="masteredWords">
+            読み込み中...
+        </div>
+
+    </section>
+
+
+    <script src="js/statistics.js"></script>
+
+</body>
+
+</html>
