@@ -49,3 +49,122 @@ console.log(
     "復習単語:",
     reviewWords
 );
+
+// ========================================
+// 現在の単語
+// ========================================
+
+let current = 0;
+
+
+// ===== 要素取得 =====
+
+const wordElement =
+    document.getElementById("word");
+
+const meaningElement =
+    document.getElementById("meaning");
+
+const currentElement =
+    document.getElementById("current");
+
+
+// ========================================
+// 単語を表示
+// ========================================
+
+function displayWord() {
+
+    // 復習する単語がない場合
+    if (reviewWords.length === 0) {
+
+        wordElement.textContent =
+            "復習する単語がありません";
+
+        meaningElement.style.display =
+            "none";
+
+        currentElement.textContent =
+            "0";
+
+        return;
+    }
+
+
+    const word =
+        reviewWords[current];
+
+
+    wordElement.textContent =
+        word.word;
+
+    meaningElement.textContent =
+        word.meaning;
+
+
+    // 意味を隠す
+    meaningElement.style.display =
+        "none";
+
+
+    // 番号
+    currentElement.textContent =
+        current + 1;
+
+}
+
+
+// ========================================
+// 意味を見る
+// ========================================
+
+document.getElementById("showMeaning").onclick =
+    function () {
+
+        meaningElement.style.display =
+            "block";
+
+    };
+
+
+// ========================================
+// 次へ
+// ========================================
+
+document.getElementById("next").onclick =
+    function () {
+
+        if (current < reviewWords.length - 1) {
+
+            current++;
+
+            displayWord();
+
+        }
+
+    };
+
+
+// ========================================
+// 前へ
+// ========================================
+
+document.getElementById("previous").onclick =
+    function () {
+
+        if (current > 0) {
+
+            current--;
+
+            displayWord();
+
+        }
+
+    };
+
+
+// ========================================
+// 最初の単語を表示
+// ========================================
+
+displayWord();
