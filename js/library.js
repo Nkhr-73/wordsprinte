@@ -70,34 +70,6 @@ function displayMasteryRate() {
 
     // 以下はそのまま
     // ========================================
-// 評価別の単語数を表示
-// ========================================
-
-function displayStatusCounts() {
-
-    const perfectCount =
-        words.filter(word => word.status === "perfect").length;
-
-    const unsureCount =
-        words.filter(word => word.status === "unsure").length;
-
-    const badCount =
-        words.filter(word => word.status === "bad").length;
-
-    const unratedCount =
-        words.filter(word => !word.status).length;
 
 
-    document.getElementById("perfectCount").textContent =
-        `😎 完璧：${perfectCount}語`;
 
-    document.getElementById("unsureCount").textContent =
-        `🤔 あやしい：${unsureCount}語`;
-
-    document.getElementById("badCount").textContent =
-        `😵 全然：${badCount}語`;
-
-    document.getElementById("unratedCount").textContent =
-        `未評価：${unratedCount}語`;
-
-}
