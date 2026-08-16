@@ -58,4 +58,14 @@ function displayMasteryRate() {
 
 // ===== 実行 =====
 
-displayMasteryRate();
+function displayMasteryRate() {
+
+    console.log(
+        "masteryRate要素:",
+        document.getElementById("masteryRate")
+    );
+
+    const masteryElement =
+        document.getElementById("masteryRate");
+
+    // 以下はそのまま
