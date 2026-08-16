@@ -168,3 +168,63 @@ document.getElementById("previous").onclick =
 // ========================================
 
 displayWord();
+
+// ========================================
+// 評価
+// ========================================
+
+function rate(level) {
+
+    // 復習対象がない場合
+    if (reviewWords.length === 0) {
+        return;
+    }
+
+    // 現在の単語
+    const currentWord = reviewWords[current];
+
+    // 元データの中から同じ単語を探す
+    const targetWord = allWords.find(
+        word => word.word === currentWord.word
+    );
+
+    // 見つからなかった場合
+    if (!targetWord) {
+        console.log("単語が見つかりません");
+        return;
+    }
+
+    // 評価を更新
+    targetWord.status = level;
+
+    // localStorageへ保存
+    localStorage.setItem(
+        "wordsprint_words",
+        JSON.stringify(allWords)
+    );
+
+    console.log(
+        currentWord.word,
+        "→",
+        level
+    );
+
+    // 次の単語へ
+    if (current < reviewWords.length - 1) {
+
+        current++;
+
+        displayWord();
+
+    } else {
+
+        // 最後の単語だった場合
+        wordElement.textContent =
+            "復習完了！";
+
+        meaningElement.style.display =
+            "none";
+
+    }
+
+}
