@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Review - WordSprint</title>
+</head>
+
+<body>
+
+    <h1>Review</h1>
+
+    <p>
+        復習する単語：
+        <span id="reviewTotal">0</span>語
+    </p>
+
+    <hr>
+
+    <p>
+        <span id="current">1</span>
+        /
+        <span id="total">0</span>
+    </p>
+
+    <h2 id="word">単語</h2>
+
+    <button id="showMeaning">
+        意味を見る
+    </button>
+
+    <p id="meaning" style="display:none;">
+        意味
+    </p>
+
+    <button id="previous">← 前へ</button>
+    <button id="next">次へ →</button>
+
+    <br><br>
+
+    <button onclick="rate('bad')">
+        😵 全然
+    </button>
+
+    <button onclick="rate('unsure')">
+        🤔 あやしい
+    </button>
+
+    <button onclick="rate('perfect')">
+        😎 完璧
+    </button>
+
+
+    <script src="js/review.js"></script>
+
+</body>
+
+</html>
