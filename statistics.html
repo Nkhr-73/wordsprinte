@@ -5,125 +5,468 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Statistics - WordSprint</title>
-    .top-header {
-    padding: 16px 20px;
-    border-bottom: 1px solid #ddd;
-}
+    <title>Statistics | WordSprint</title>
 
-.top-header a {
-    text-decoration: none;
-    color: inherit;
-    font-size: 22px;
-    font-weight: bold;
-}
+    <style>
+
+        /* ==============================
+           基本
+        ============================== */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f7f8fa;
+            color: #222;
+        }
+
+
+        /* ==============================
+           ヘッダー
+        ============================== */
+
+        .top-header {
+            background: white;
+            padding: 16px 24px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .top-header a {
+            text-decoration: none;
+            color: #222;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+
+        /* ==============================
+           Statistics全体
+        ============================== */
+
+        .statistics-container {
+            width: min(900px, 92%);
+            margin: 40px auto;
+        }
+
+        .statistics-title {
+            text-align: center;
+            font-size: 32px;
+            margin-bottom: 35px;
+        }
+
+
+        /* ==============================
+           セクション共通
+        ============================== */
+
+        .statistics-section {
+            background: white;
+            border-radius: 18px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+        }
+
+        .statistics-section h2 {
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-size: 22px;
+        }
+
+
+        /* ==============================
+           全体学習状況
+        ============================== */
+
+        .overview-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+
+        .stat-card {
+            background: #f7f8fa;
+            border-radius: 14px;
+            padding: 20px 10px;
+            text-align: center;
+        }
+
+        .stat-label {
+            display: block;
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+            display: block;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+
+        /* ==============================
+           習得率
+        ============================== */
+
+        .mastery-box {
+            text-align: center;
+            margin-top: 25px;
+        }
+
+        .mastery-number {
+            font-size: 42px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .mastery-bar {
+            width: 100%;
+            height: 12px;
+            background: #e5e7eb;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .mastery-fill {
+            height: 100%;
+            width: 0%;
+            background: #222;
+            border-radius: 20px;
+        }
+
+
+        /* ==============================
+           評価別
+        ============================== */
+
+        .rating-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .rating-card {
+            padding: 25px;
+            border-radius: 14px;
+            text-align: center;
+            background: #f7f8fa;
+        }
+
+        .rating-card .emoji {
+            font-size: 32px;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .rating-card .count {
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+
+        /* ==============================
+           進捗
+        ============================== */
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .progress-value {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: #e5e7eb;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: #222;
+            border-radius: 20px;
+        }
+
+
+        /* ==============================
+           Unit別
+        ============================== */
+
+        #unitStats {
+            line-height: 1.8;
+        }
+
+
+        /* ==============================
+           単語一覧
+        ============================== */
+
+        #weakWords,
+        #masteredWords {
+            line-height: 1.8;
+        }
+
+        #weakWords > *,
+        #masteredWords > * {
+            margin-bottom: 8px;
+        }
+
+
+        /* ==============================
+           スマホ
+        ============================== */
+
+        @media (max-width: 700px) {
+
+            .statistics-container {
+                margin-top: 25px;
+            }
+
+            .statistics-title {
+                font-size: 27px;
+            }
+
+            .overview-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .rating-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .statistics-section {
+                padding: 20px;
+            }
+
+        }
+
+    </style>
+
 </head>
 
+
 <body>
+
+    <!-- ヘッダー -->
+
     <header class="top-header">
-    <a href="index.html">🏃 WordSprint</a>
-</header>
-
-    <h1>Statistics</h1>
-
-    <!-- 全体 -->
-    <section>
-
-        <h2>📊 学習状況</h2>
-
-        <p>
-            総単語数：
-            <span id="totalWords">0</span>語
-        </p>
-
-        <p>
-            学習済み：
-            <span id="studiedWords">0</span>語
-        </p>
-
-        <p>
-            未評価：
-            <span id="unratedWords">0</span>語
-        </p>
-
-        <p>
-            習得率：
-            <span id="masteryRate">0.0</span>%
-        </p>
-
-    </section>
+        <a href="index.html">🏃 WordSprint</a>
+    </header>
 
 
-    <!-- 評価別 -->
-    <section>
+    <main class="statistics-container">
 
-        <h2>🎯 評価別</h2>
-
-        <p>
-            😎 完璧：
-            <span id="perfectCount">0</span>語
-        </p>
-
-        <p>
-            🤔 あやしい：
-            <span id="unsureCount">0</span>語
-        </p>
-
-        <p>
-            😵 全然：
-            <span id="badCount">0</span>語
-        </p>
-
-    </section>
+        <h1 class="statistics-title">
+            📊 Statistics
+        </h1>
 
 
-    <!-- 進捗 -->
-    <section>
+        <!-- ==============================
+             全体
+        ============================== -->
 
-        <h2>📈 進捗</h2>
+        <section class="statistics-section">
 
-        <p>
-            学習済み：
-            <span id="progressRate">0.0</span>%
-        </p>
+            <h2>📊 学習状況</h2>
 
-    </section>
+            <div class="overview-grid">
 
+                <div class="stat-card">
+                    <span class="stat-label">
+                        総単語数
+                    </span>
 
-    <!-- Unit別 -->
-    <section>
+                    <span class="stat-value">
+                        <span id="totalWords">0</span>
+                    </span>
 
-        <h2>📚 Unit別</h2>
-
-        <div id="unitStats">
-            読み込み中...
-        </div>
-
-    </section>
+                </div>
 
 
-    <!-- 苦手単語 -->
-    <section>
+                <div class="stat-card">
+                    <span class="stat-label">
+                        学習済み
+                    </span>
 
-        <h2>⚠️ 復習が必要な単語</h2>
+                    <span class="stat-value">
+                        <span id="studiedWords">0</span>
+                    </span>
 
-        <div id="weakWords">
-            読み込み中...
-        </div>
-
-    </section>
+                </div>
 
 
-    <!-- 完璧な単語 -->
-    <section>
+                <div class="stat-card">
+                    <span class="stat-label">
+                        未評価
+                    </span>
 
-        <h2>😎 習得した単語</h2>
+                    <span class="stat-value">
+                        <span id="unratedWords">0</span>
+                    </span>
 
-        <div id="masteredWords">
-            読み込み中...
-        </div>
+                </div>
 
-    </section>
+
+                <div class="stat-card">
+                    <span class="stat-label">
+                        習得率
+                    </span>
+
+                    <span class="stat-value">
+                        <span id="masteryRate">0.0</span>%
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ==============================
+             評価別
+        ============================== -->
+
+        <section class="statistics-section">
+
+            <h2>🎯 評価別</h2>
+
+            <div class="rating-grid">
+
+                <div class="rating-card">
+
+                    <span class="emoji">😎</span>
+
+                    <div class="count">
+                        <span id="perfectCount">0</span>語
+                    </div>
+
+                    <div>
+                        完璧
+                    </div>
+
+                </div>
+
+
+                <div class="rating-card">
+
+                    <span class="emoji">🤔</span>
+
+                    <div class="count">
+                        <span id="unsureCount">0</span>語
+                    </div>
+
+                    <div>
+                        あやしい
+                    </div>
+
+                </div>
+
+
+                <div class="rating-card">
+
+                    <span class="emoji">😵</span>
+
+                    <div class="count">
+                        <span id="badCount">0</span>語
+                    </div>
+
+                    <div>
+                        全然
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ==============================
+             進捗
+        ============================== -->
+
+        <section class="statistics-section">
+
+            <h2>📈 進捗</h2>
+
+            <div class="progress-info">
+
+                <span>
+                    学習済み
+                </span>
+
+                <span class="progress-value">
+                    <span id="progressRate">0.0</span>%
+                </span>
+
+            </div>
+
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+
+        </section>
+
+
+        <!-- ==============================
+             Unit別
+        ============================== -->
+
+        <section class="statistics-section">
+
+            <h2>📚 Unit別</h2>
+
+            <div id="unitStats">
+                読み込み中...
+            </div>
+
+        </section>
+
+
+        <!-- ==============================
+             苦手単語
+        ============================== -->
+
+        <section class="statistics-section">
+
+            <h2>⚠️ 復習が必要な単語</h2>
+
+            <div id="weakWords">
+                読み込み中...
+            </div>
+
+        </section>
+
+
+        <!-- ==============================
+             習得済み
+        ============================== -->
+
+        <section class="statistics-section">
+
+            <h2>😎 習得した単語</h2>
+
+            <div id="masteredWords">
+                読み込み中...
+            </div>
+
+        </section>
+
+    </main>
 
 
     <script src="js/statistics.js"></script>
