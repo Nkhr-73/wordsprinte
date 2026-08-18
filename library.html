@@ -6,35 +6,165 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Library | WordSprint</title>
-    .top-header {
-    padding: 16px 20px;
-    border-bottom: 1px solid #ddd;
-}
 
-.top-header a {
-    text-decoration: none;
-    color: inherit;
-    font-size: 22px;
-    font-weight: bold;
-}
+    <style>
+
+        /* ==============================
+           基本
+        ============================== */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f7f8fa;
+            color: #222;
+        }
+
+
+        /* ==============================
+           ヘッダー
+        ============================== */
+
+        .top-header {
+            background: white;
+            padding: 16px 24px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .top-header a {
+            text-decoration: none;
+            color: #222;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+
+        /* ==============================
+           Library全体
+        ============================== */
+
+        .library-container {
+            width: min(900px, 92%);
+            margin: 40px auto;
+        }
+
+        .library-title {
+            text-align: center;
+            font-size: 32px;
+            margin-bottom: 35px;
+        }
+
+
+        /* ==============================
+           Libraryカード
+        ============================== */
+
+        #library {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+        }
+
+        .library-card {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+        }
+
+
+        /* ==============================
+           単語
+        ============================== */
+
+        .library-word {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .library-meaning {
+            color: #666;
+            font-size: 16px;
+            margin-bottom: 12px;
+        }
+
+        .library-info {
+            font-size: 13px;
+            color: #888;
+        }
+
+
+        /* ==============================
+           読み込み中
+        ============================== */
+
+        .loading {
+            text-align: center;
+            color: #777;
+            padding: 50px 20px;
+        }
+
+
+        /* ==============================
+           スマホ
+        ============================== */
+
+        @media (max-width: 700px) {
+
+            .library-container {
+                margin-top: 25px;
+            }
+
+            .library-title {
+                font-size: 27px;
+            }
+
+            #library {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
 
 </head>
 
+
 <body>
-　<header class="top-header">
-    <a href="index.html">🏃 WordSprint</a>
-</header>
 
-    <h1>📚 Library</h1>
+    <!-- ヘッダー -->
 
-    <div id="library">
-
-        <p>単語帳を読み込み中...</p>
-
-    </div>
+    <header class="top-header">
+        <a href="index.html">🏃 WordSprint</a>
+    </header>
 
 
-   <script src="js/library.js"></script>
+    <!-- Library -->
+
+    <main class="library-container">
+
+        <h1 class="library-title">
+            📚 Library
+        </h1>
+
+
+        <div id="library">
+
+            <p class="loading">
+                単語帳を読み込み中...
+            </p>
+
+        </div>
+
+    </main>
+
+
+    <script src="js/library.js"></script>
 
 </body>
 
