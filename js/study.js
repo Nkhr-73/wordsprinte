@@ -428,30 +428,22 @@ function showResult() {
             </section>
 
 
-            <div style="margin-top: 30px;">
+        <div class="result-actions">
 
-                <button
-                    onclick="location.reload()"
-                    style="
-                        padding: 12px 20px;
-                        margin: 5px;
-                        cursor: pointer;
-                    "
-                >
-                    🔄 もう一度学習
-                </button>
+    <button
+        class="result-button primary"
+        onclick="location.reload()"
+    >
+        🔄 もう一度学習
+    </button>
 
+    <button
+        class="result-button secondary"
+        onclick="location.href='index.html'"
+    >
+        🏠 Homeへ戻る
+    </button>
 
-                <button
-                    onclick="location.href='index.html'"
-                    style="
-                        padding: 12px 20px;
-                        margin: 5px;
-                        cursor: pointer;
-                    "
-                >
-                    🏠 Homeへ戻る
-                </button>
 
             </div>
 
