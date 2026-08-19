@@ -124,27 +124,45 @@ function readCSV() {
         const csvText = event.target.result;
 
 
-        // 改行ごとに分割
+        // ========================================
+        // CSVを行ごとに分割
+        // ========================================
+
         const lines =
             csvText
                 .trim()
                 .split(/\r?\n/);
 
 
+        if (lines.length < 2) {
+
+            alert("CSVに単語データがありません。");
+
+            return;
+
+        }
+
+
+        // ========================================
         // ヘッダー
+        // ========================================
+
         const headers =
             parseCSVLine(lines[0]);
 
 
-        console.log("ヘッダー:", headers);
-
-
-        const words = [];
+        console.log(
+            "ヘッダー:",
+            headers
+        );
 
 
         // ========================================
-        // データを1行ずつ処理
+        // 今回読み込んだ単語
         // ========================================
+
+        const newWords = [];
+
 
         for (let i = 1; i < lines.length; i++) {
 
@@ -173,9 +191,110 @@ function readCSV() {
             }
 
 
-            words.push(word);
+            newWords.push(word);
 
         }
+
+
+        // ========================================
+        // 既存データを取得
+        // ========================================
+
+        let savedWords = [];
+
+        const savedData =
+            localStorage.getItem("wordsprint_words");
+
+
+        if (savedData) {
+
+            try {
+
+                savedWords =
+                    JSON.parse(savedData);
+
+            } catch (error) {
+
+                console.error(
+                    "保存データの読み込みに失敗しました。",
+                    error
+                );
+
+                savedWords = [];
+
+            }
+
+        }
+
+
+        // ========================================
+        // 既存データ＋新データを統合
+        // ========================================
+
+        const mergedWords =
+            [...savedWords];
+
+
+        let addedCount = 0;
+        let updatedCount = 0;
+
+
+        newWords.forEach(newWord => {
+
+            // wordを識別キーにする
+            const existingIndex =
+                mergedWords.findIndex(
+                    savedWord =>
+                        savedWord.word === newWord.word
+                );
+
+
+            // ====================================
+            // 新しい単語
+            // ====================================
+
+            if (existingIndex === -1) {
+
+                mergedWords.push(newWord);
+
+                addedCount++;
+
+                return;
+
+            }
+
+
+            // ====================================
+            // 既存単語
+            // ====================================
+
+            const oldWord =
+                mergedWords[existingIndex];
+
+
+            // statusを保存
+            const oldStatus =
+                oldWord.status;
+
+
+            // CSVの内容で更新
+            mergedWords[existingIndex] = {
+                ...newWord
+            };
+
+
+            // 既存のstatusがあれば維持
+            if (oldStatus) {
+
+                mergedWords[existingIndex].status =
+                    oldStatus;
+
+            }
+
+
+            updatedCount++;
+
+        });
 
 
         // ========================================
@@ -184,7 +303,7 @@ function readCSV() {
 
         localStorage.setItem(
             "wordsprint_words",
-            JSON.stringify(words)
+            JSON.stringify(mergedWords)
         );
 
 
@@ -193,13 +312,29 @@ function readCSV() {
         // ========================================
 
         console.log(
-            "読み込んだ単語数:",
-            words.length
+            "今回読み込んだ単語数:",
+            newWords.length
         );
 
         console.log(
+            "新しく追加:",
+            addedCount
+        );
+
+        console.log(
+            "更新:",
+            updatedCount
+        );
+
+        console.log(
+            "保存されている単語数:",
+            mergedWords.length
+        );
+
+
+        console.log(
             "最初の単語:",
-            words[0]
+            mergedWords[0]
         );
 
 
@@ -208,15 +343,25 @@ function readCSV() {
         // ========================================
 
         result.textContent =
-            `読み込み成功！ ${words.length}語`;
+            `読み込み成功！ ${newWords.length}語`;
 
 
         updateSavedCount();
 
 
         alert(
-            `${words.length}語の単語帳を保存しました！`
+            `${newWords.length}語を読み込みました！\n\n` +
+            `新規追加：${addedCount}語\n` +
+            `更新：${updatedCount}語\n` +
+            `合計：${mergedWords.length}語`
         );
+
+
+        // ファイル選択をリセット
+        csvFile.value = "";
+
+        fileName.textContent =
+            "ファイルが選択されていません";
 
     };
 
