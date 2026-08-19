@@ -446,6 +446,42 @@ function showResult() {
 
 
             </div>
+            <style>
+
+.result-actions {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.result-button {
+    border: none;
+    border-radius: 12px;
+    padding: 13px 24px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+.result-button:hover {
+    transform: translateY(-2px);
+    opacity: 0.9;
+}
+
+.result-button.primary {
+    background: #222;
+    color: white;
+}
+
+.result-button.secondary {
+    background: #e9eaed;
+    color: #222;
+}
+
+</style>
 
         </main>
 
