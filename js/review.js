@@ -1,21 +1,42 @@
 // ========================================
 // WordSprint - Review
+// Phase 3.2
 // ========================================
 
 console.log("review.js 読み込み成功");
 
 
-// ===== 保存データを取得 =====
+// ========================================
+// 保存データを取得
+// ========================================
 
 const savedData =
     localStorage.getItem("wordsprint_words");
 
-const allWords =
-    savedData ? JSON.parse(savedData) : [];
+let allWords = [];
+
+if (savedData) {
+
+    try {
+
+        allWords = JSON.parse(savedData);
+
+    } catch (error) {
+
+        console.error(
+            "単語データの読み込みに失敗しました。",
+            error
+        );
+
+    }
+
+}
 
 
-// ===== 復習対象を取得 =====
-// 🤔 あやしい と 😵 全然
+// ========================================
+// 復習対象を取得
+// 🤔 あやしい / 😵 全然
+// ========================================
 
 const reviewWords =
     allWords.filter(word =>
@@ -24,7 +45,9 @@ const reviewWords =
     );
 
 
-// ===== 復習単語数を表示 =====
+// ========================================
+// 復習単語数
+// ========================================
 
 document.getElementById("reviewTotal").textContent =
     reviewWords.length;
@@ -33,7 +56,9 @@ document.getElementById("total").textContent =
     reviewWords.length;
 
 
-// ===== Console確認 =====
+// ========================================
+// Console確認
+// ========================================
 
 console.log(
     "全単語:",
@@ -50,6 +75,7 @@ console.log(
     reviewWords
 );
 
+
 // ========================================
 // 現在の単語
 // ========================================
@@ -57,7 +83,19 @@ console.log(
 let current = 0;
 
 
-// ===== 要素取得 =====
+// ========================================
+// 1回目のクリックかどうか
+// ========================================
+
+// false = 意味を見ていない
+// true  = 意味を見た
+
+let meaningShown = false;
+
+
+// ========================================
+// 要素取得
+// ========================================
 
 const wordElement =
     document.getElementById("word");
@@ -75,11 +113,12 @@ const currentElement =
 
 function displayWord() {
 
-    // 復習する単語がない場合
     if (reviewWords.length === 0) {
 
         wordElement.textContent =
             "復習する単語がありません";
+
+        meaningElement.textContent = "";
 
         meaningElement.style.display =
             "none";
@@ -91,15 +130,15 @@ function displayWord() {
     }
 
 
-    const word =
+    const currentWord =
         reviewWords[current];
 
 
     wordElement.textContent =
-        word.word;
+        currentWord.word || "単語なし";
 
     meaningElement.textContent =
-        word.meaning;
+        currentWord.meaning || "意味なし";
 
 
     // 意味を隠す
@@ -107,42 +146,15 @@ function displayWord() {
         "none";
 
 
+    // 1回目のクリック待ち
+    meaningShown = false;
+
+
     // 番号
     currentElement.textContent =
         current + 1;
 
 }
-
-
-// ========================================
-// 意味を見る
-// ========================================
-
-document.getElementById("showMeaning").onclick =
-    function () {
-
-        meaningElement.style.display =
-            "block";
-
-    };
-
-
-// ========================================
-// 次へ
-// ========================================
-
-document.getElementById("next").onclick =
-    function () {
-
-        if (current < reviewWords.length - 1) {
-
-            current++;
-
-            displayWord();
-
-        }
-
-    };
 
 
 // ========================================
@@ -164,38 +176,70 @@ document.getElementById("previous").onclick =
 
 
 // ========================================
-// 最初の単語を表示
-// ========================================
-
-displayWord();
-
-// ========================================
 // 評価
 // ========================================
 
-function rate(level) {
+window.rate = function(level) {
 
-    // 復習対象がない場合
+    // 復習対象がない
     if (reviewWords.length === 0) {
         return;
     }
 
-    // 現在の単語
-    const currentWord = reviewWords[current];
 
-    // 元データの中から同じ単語を探す
-    const targetWord = allWords.find(
-        word => word.word === currentWord.word
-    );
+    // ====================================
+    // 1回目
+    // ====================================
 
-    // 見つからなかった場合
-    if (!targetWord) {
-        console.log("単語が見つかりません");
+    if (!meaningShown) {
+
+        meaningElement.style.display =
+            "block";
+
+        meaningShown = true;
+
+
+        console.log(
+            "意味を表示:",
+            reviewWords[current].word
+        );
+
+
+        // まだ評価は保存しない
         return;
+
     }
 
-    // 評価を更新
+
+    // ====================================
+    // 2回目
+    // ====================================
+
+    const currentWord =
+        reviewWords[current];
+
+
+    // 元データから探す
+    const targetWord =
+        allWords.find(
+            word => word.word === currentWord.word
+        );
+
+
+    if (!targetWord) {
+
+        console.log(
+            "単語が見つかりません"
+        );
+
+        return;
+
+    }
+
+
+    // 評価を保存
     targetWord.status = level;
+
 
     // localStorageへ保存
     localStorage.setItem(
@@ -203,28 +247,123 @@ function rate(level) {
         JSON.stringify(allWords)
     );
 
+
     console.log(
         currentWord.word,
         "→",
         level
     );
 
-    // 次の単語へ
-    if (current < reviewWords.length - 1) {
 
-        current++;
+    // ====================================
+    // 最後の単語か確認
+    // ====================================
 
-        displayWord();
+    if (
+        current ===
+        reviewWords.length - 1
+    ) {
 
-    } else {
+        showReviewResult();
 
-        // 最後の単語だった場合
-        wordElement.textContent =
-            "復習完了！";
-
-        meaningElement.style.display =
-            "none";
+        return;
 
     }
 
+
+    // ====================================
+    // 次の単語
+    // ====================================
+
+    current++;
+
+    displayWord();
+
+};
+
+
+// ========================================
+// 結果画面
+// ========================================
+
+function showReviewResult() {
+
+    document.body.innerHTML = `
+
+        <header class="top-header">
+
+            <a href="index.html">
+                🏃 WordSprint
+            </a>
+
+        </header>
+
+
+        <main style="
+            width: min(700px, 92%);
+            margin: 50px auto;
+            text-align: center;
+        ">
+
+            <h1>🎉 Review Complete!</h1>
+
+            <p>
+                復習が完了しました！
+            </p>
+
+
+            <section style="
+                background: white;
+                border-radius: 18px;
+                padding: 30px;
+                margin-top: 30px;
+                box-shadow: 0 5px 20px rgba(0,0,0,0.06);
+            ">
+
+                <h2>📚 復習した単語</h2>
+
+                <p style="
+                    font-size: 36px;
+                    font-weight: bold;
+                ">
+                    ${reviewWords.length}語
+                </p>
+
+                <p>
+                    お疲れさま！😎
+                </p>
+
+            </section>
+
+
+            <div class="result-actions">
+
+                <button
+                    class="result-button primary"
+                    onclick="location.reload()"
+                >
+                    🔄 もう一度復習
+                </button>
+
+
+                <button
+                    class="result-button secondary"
+                    onclick="location.href='index.html'"
+                >
+                    🏠 Homeへ戻る
+                </button>
+
+            </div>
+
+        </main>
+
+    `;
+
 }
+
+
+// ========================================
+// 初期表示
+// ========================================
+
+displayWord();
